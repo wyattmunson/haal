@@ -1,0 +1,12 @@
+{
+  "name": "vienna",
+  "version": "0.1.0",
+  "description": "An application to create Harness resources over API",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
