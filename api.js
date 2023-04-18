@@ -1,7 +1,9 @@
 // import { logme } from "./log";
 
+import { logme } from "./log.js";
+
 export const httpGet = (url) => {
-  console.log("Using endpoint:", url);
+  logme(`Using endpoint: ${url}`, 2);
   return fetch(url, {
     method: "GET",
     headers: {
@@ -11,7 +13,6 @@ export const httpGet = (url) => {
     },
   })
     .then((res) => {
-      console.log(res.status);
       if (res.status === 401) throw new Error("Unauthorized");
       if (res.status === 500) throw new Error("Upstream error");
 
@@ -24,7 +25,7 @@ export const httpGet = (url) => {
       return res.json();
     })
     .then((res) => {
-      console.log("SUCCESS: API call to", url);
+      logme("SUCCESS: API call to", url);
       // log body:
       //   logme(res, 2);
       return res;
@@ -35,7 +36,7 @@ export const httpGet = (url) => {
 };
 
 export const httpPut = (url, body) => {
-  console.log("Using endpoint:", url);
+  logme(`Using endpoint: ${url}`, 2);
   return fetch(url, {
     method: "PUT",
     body: JSON.stringify(body),
@@ -51,7 +52,7 @@ export const httpPut = (url, body) => {
       return res.json();
     })
     .then((res) => {
-      console.log("SUCCESS: API call to", url);
+      logme(`SUCCESS: API call to ${url}`, 2);
       // console.log("SUCCESS", res);
       return res;
     })
@@ -61,7 +62,7 @@ export const httpPut = (url, body) => {
 };
 
 export const httpPost = (url, body) => {
-  console.log("Using endpoint:", url);
+  logme(`Using endpoint: ${url}`, 2);
   return fetch(url, {
     method: "POST",
     body: JSON.stringify(body),
@@ -80,7 +81,7 @@ export const httpPost = (url, body) => {
       return res.json();
     })
     .then((res) => {
-      console.log("SUCCESS", res);
+      logme(`SUCCESS: API call to ${url}`, 2);
     })
     .catch((err) => {
       console.log("ERROR", err);
@@ -88,7 +89,7 @@ export const httpPost = (url, body) => {
 };
 
 export const httpPostYaml = (url, body) => {
-  console.log("Using endpoint:", url);
+  logme(`Using endpoint: ${url}`, 2);
   return fetch(url, {
     method: "POST",
     body: body,
@@ -101,13 +102,13 @@ export const httpPostYaml = (url, body) => {
     .then((res) => {
       if (res.status === 401) {
         console.log("API CALL FAILED");
-        console.error(res);
+        // console.error(res);
         throw new Error();
       }
       return res.json();
     })
     .then((res) => {
-      console.log("SUCCESS", res);
+      logme(`SUCCESS: API call to ${url}`, 2);
     })
     .catch((err) => {
       console.log("ERROR", err);
@@ -115,7 +116,7 @@ export const httpPostYaml = (url, body) => {
 };
 
 export const httpPutYaml = (url, body) => {
-  console.log("Using endpoint:", url);
+  logme(`Using endpoint: ${url}`, 2);
   return fetch(url, {
     method: "PUT",
     body: body,
@@ -128,13 +129,13 @@ export const httpPutYaml = (url, body) => {
     .then((res) => {
       if (res.status === 401) {
         console.log("API CALL FAILED");
-        console.error(res);
+        // console.error(res);
         throw new Error();
       }
       return res.json();
     })
     .then((res) => {
-      console.log("SUCCESS", res);
+      logme(`SUCCESS: API call to ${url}`, 2);
     })
     .catch((err) => {
       console.log("ERROR", err);

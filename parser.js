@@ -1,7 +1,6 @@
 import yaml from "js-yaml";
 import fs from "fs";
 import util from "util";
-// const util = require("util");
 
 const fullLog = (object) => {
   console.log(util.inspect(object, { showHidden: false, depth: null, colors: true }));
@@ -9,7 +8,7 @@ const fullLog = (object) => {
 
 export const parseYaml = () => {
   // get from file
-  const data = fs.readFileSync("./cruise.yaml", "utf8");
+  const data = fs.readFileSync("./abstraction.yaml", "utf8");
   let obj = yaml.load(data);
 
   return obj;
@@ -94,10 +93,10 @@ export const parsePipeline = (config, query) => {
   let envs = config.components[0].artifacts[0]["beta-values-files"];
   let stageNames = [];
   let stages = [];
-  console.log(envs);
   for (let i in envs) {
     stageNames.push(i);
   }
+  console.log("Creating environments:", stageNames);
 
   //   console.log("Stage Names", stageNames);
   stageNames.forEach((x) => {
