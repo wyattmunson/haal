@@ -88,3 +88,91 @@ export const parseService = (serviceManifest) => {
   //   fullLog(serviceJson);
   return serviceJson;
 };
+
+export const parsePipeline = (config, query, name) => {
+  // get envs - a deployment stage will be created for each env
+  let envs = config.components[0].artifacts[0]["beta-values-files"];
+  let stageNames = [];
+  let stages = [];
+  console.log(envs);
+  for (let i in envs) {
+    stageNames.push(i);
+  }
+  //   const stages = envs.forEach((x) => {
+  //     x.push;
+  //   }, []);
+  console.log("Stage Names", stageNames);
+  stageNames.forEach((x) => {
+    stages.push(stageGenerator(x));
+  });
+
+  console.log("THINGER", stages);
+
+  let pipelineJson = {
+    pipeline: {
+      name: name,
+      identifier: query.pipelineIdentifier.replace("-", ""),
+      projectIdentifier: query.projectIdentifier,
+      orgIdentifier: query.orgIdentifier,
+      stages: stages,
+    },
+  };
+  //   fullLog(pipelineJson);
+  return pipelineJson;
+};
+
+const stageGenerator = (name) => {
+  // using templates
+  return {
+    stage: {
+      name: `deploy ${name}`,
+      identifier: `deploy_${name}`,
+      template: {
+        templateRef: "basicrollingdeploy",
+        versionLabel: "0.1.0",
+        templateInputs: {
+          type: "Deployment",
+          spec: {
+            service: {
+              serviceInputs: {
+                serviceDefinition: {
+                  type: "Kubernetes",
+                  spec: {
+                    service: {
+                      serviceInputs: {
+                        serviceDefinition: {
+                          type: "Kubernetes",
+                          spec: {
+                            artifacts: {
+                              artifacts: {
+                                primary: {
+                                  primaryArtifactRef: "<+input>",
+                                  sources: {
+                                    // TODO: parameterize this
+                                    identifier: "releasinator-example/webapp-image",
+                                    type: "DockerRegistry",
+                                    spec: {
+                                      tag: "<+input>",
+                                    },
+                                  },
+                                },
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            environment: {
+              environmentRef: name,
+              infrastructureDefinitions: [{ identifier: `${name}_infra` }],
+            },
+          },
+        },
+      },
+    },
+  };
+};

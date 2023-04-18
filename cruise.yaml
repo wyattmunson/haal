@@ -16,10 +16,11 @@ components:
         chart: deploy/chart/releasinator-xampl/
         beta-values-files:
           dev: deploy/chart/releasinator-xampl/values-dev.yaml
-          staging: deploy/chart/releasinator-xampl/values-staging.yaml
-          rnd: deploy/chart/releasinator-xampl/values-rnd.yaml
-          bake: deploy/chart/releasinator-xampl/values-bake.yaml
-          stable: deploy/chart/releasinator-xampl/values-stable.yaml
+          stage: deploy/chart/releasinator-xampl/values-dev.yaml
+          # staging: deploy/chart/releasinator-xampl/values-staging.yaml
+          # rnd: deploy/chart/releasinator-xampl/values-rnd.yaml
+          # bake: deploy/chart/releasinator-xampl/values-bake.yaml
+          # stable: deploy/chart/releasinator-xampl/values-stable.yaml
   - name: "backend"
     artifacts: # instructions to build manifest
       - kind: "helm-service/v0"
