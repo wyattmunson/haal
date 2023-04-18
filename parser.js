@@ -1,28 +1,19 @@
 import yaml from "js-yaml";
 import fs from "fs";
-import util from "util";
-
-const fullLog = (object) => {
-  console.log(util.inspect(object, { showHidden: false, depth: null, colors: true }));
-};
 
 export const parseYaml = () => {
-  // get from file
   const data = fs.readFileSync("./abstraction.yaml", "utf8");
-  let obj = yaml.load(data);
-
-  return obj;
+  return yaml.load(data);
 };
 
 export const convertToYaml = (json) => {
   return yaml.dump(json);
-  //   const yamlData = yaml.dump(json);
-  //   console.log(yamlData);
 };
 
 const generateArtifacts = (artifact) => {
   return {
     primary: {
+      // use Harness variables and expressions
       primaryArtifactRef: "<+input>",
       sources: [
         {
@@ -98,13 +89,12 @@ export const parsePipeline = (config, query) => {
   }
   console.log("Creating environments:", stageNames);
 
-  //   console.log("Stage Names", stageNames);
+  // generate stages from stage names and add to stages
   stageNames.forEach((x) => {
     stages.push(stageGenerator(x));
   });
 
-  //   console.log("ALL STAGES:", stages);
-
+  // compose pipeline with identifiers and stages array
   let pipelineJson = {
     pipeline: {
       name: query.pipelineName,
@@ -114,7 +104,7 @@ export const parsePipeline = (config, query) => {
       stages: stages,
     },
   };
-  //   fullLog(pipelineJson);
+
   return pipelineJson;
 };
 

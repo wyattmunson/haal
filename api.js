@@ -1,5 +1,3 @@
-// import { logme } from "./log";
-
 import { logme } from "./log.js";
 
 export const httpGet = (url) => {
@@ -13,21 +11,15 @@ export const httpGet = (url) => {
     },
   })
     .then((res) => {
+      // non-2xx calls may be desirable
       if (res.status === 401) throw new Error("Unauthorized");
       if (res.status === 500) throw new Error("Upstream error");
-
-      //   if (!res.ok) {
-      //     console.log("API CALL FAILED");
-      //     console.error(res.json());
-      //     // console.error(res);
-      //     throw new Error();
-      //   }
+      console.log("resolved");
       return res.json();
     })
     .then((res) => {
-      logme("SUCCESS: API call to", url);
-      // log body:
-      //   logme(res, 2);
+      logme(`SUCCESS: API call to ${url}`, 2);
+      logme(`Response: ${res}`, 3);
       return res;
     })
     .catch((err) => {

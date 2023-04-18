@@ -2,7 +2,7 @@ version: releasefile/v0alpha
 # Q: how to map a pipeline to a project?
 # Q: how are credentials referenced?
 components:
-  - name: "webapp"
+  - name: "releasinatorwebapp"
     artifacts: # instructions to build manifest
       - kind: "helm-service/v0"
         name: "webapp"
@@ -20,7 +20,7 @@ components:
           rnd: deploy/chart/releasinator-xampl/values-rnd.yaml
           bake: deploy/chart/releasinator-xampl/values-bake.yaml
           stable: deploy/chart/releasinator-xampl/values-stable.yaml
-  - name: "backend"
+  - name: "releasinatorbackend"
     artifacts: # instructions to build manifest
       - kind: "helm-service/v0"
         name: "backend"

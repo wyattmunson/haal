@@ -12,3 +12,7 @@
 // const createInfra = () => {
 //   console.log("Creating Infrastructure");
 // };
+
+const fullLog = (object) => {
+  console.log(util.inspect(object, { showHidden: false, depth: null, colors: true }));
+};

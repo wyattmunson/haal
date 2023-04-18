@@ -61,3 +61,9 @@ Details about OPA evaluations are in `data.governanceMetadata.details`:
   "updated": "1679925646198"
 }
 ```
+
+### Orgs and Projects
+
+The Org and Project identifier should be passed in with every API call. This can be surmised from application name, location, or other field. Omitting these field may impact how you reference Connectors.
+
+The identifiers are defined in `./config.js` for this example.

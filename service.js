@@ -1,8 +1,9 @@
 import { parseService, convertToYaml } from "./parser.js";
 import { httpPut } from "./api.js";
 import { unixToHuman } from "./converters.js";
+import accountConfig from "./config.json" assert { type: "json" };
 
-const accountId = "dNg7t7xEQkWV0LjivvOlcw";
+const accountId = accountConfig.accountIdentifier;
 
 export const serviceManager = async (config) => {
   console.log("--------------------\n      SERVICES      \n--------------------");
@@ -35,6 +36,7 @@ const handleService = async (serviceConfig) => {
 
   // convert to yaml
   const serviceYaml = convertToYaml(harnessConfig);
+  console.log(serviceYaml);
 
   // upsert service - make API call to Harness
   const serviceCreation = await upsertService(serviceYaml, serviceConfig.name);
@@ -62,8 +64,8 @@ const upsertService = (serviceYaml, id) => {
     yaml: serviceYaml,
     identifier: id,
     // project and org identifiers should be specified in the request
-    orgIdentifier: "SE_Sandbox",
-    projectIdentifier: "W_Inc",
+    orgIdentifier: accountConfig.orgIdentifier,
+    projectIdentifier: accountConfig.projectIdentifier,
   };
 
   const call = httpPut(url, payload);
