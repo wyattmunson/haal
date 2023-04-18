@@ -1,0 +1,41 @@
+version: releasefile/v0alpha
+# Q: how to map a pipeline to a project?
+# Q: how are credentials referenced?
+components:
+  - name: "webapp"
+    artifacts: # instructions to build manifest
+      - kind: "helm-service/v0"
+        name: "webapp"
+        docker-images:
+          - name: releasinator-example/webapp
+            repositories:
+              prod: gcr.io/cruise-gcr-prod/releasinator-example/webapp
+              dev: gcr.io/cruise-gcr-prod/releasinator-example/webapp
+            tag:
+              type: "git-sha"
+        chart: deploy/chart/releasinator-xampl/
+        beta-values-files:
+          dev: deploy/chart/releasinator-xampl/values-dev.yaml
+          staging: deploy/chart/releasinator-xampl/values-staging.yaml
+          rnd: deploy/chart/releasinator-xampl/values-rnd.yaml
+          bake: deploy/chart/releasinator-xampl/values-bake.yaml
+          stable: deploy/chart/releasinator-xampl/values-stable.yaml
+  - name: "backend"
+    artifacts: # instructions to build manifest
+      - kind: "helm-service/v0"
+        name: "backend"
+        docker-images:
+          - name: releasinator-example/backend
+            repositories:
+              prod: gcr.io/cruise-gcr-prod/releasinator-example/backend
+              dev: gcr.io/cruise-gcr-prod/releasinator-example/backend
+            tag:
+              type: "git-sha"
+        chart: deploy/chart/releasinator-xampl/
+        beta-values-files:
+          dev: deploy/chart/releasinator-xampl/values-dev.yaml
+          staging: deploy/chart/releasinator-xampl/values-staging.yaml
+          rnd: deploy/chart/releasinator-xampl/values-rnd.yaml
+          bake: deploy/chart/releasinator-xampl/values-bake.yaml
+          stable: deploy/chart/releasinator-xampl/values-stable.yaml
+import: beta-stacks.release # We can reason about what this means together for a demo
