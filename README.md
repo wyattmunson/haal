@@ -12,14 +12,13 @@ Export the `HARNESS_API_KEY` variable in the current terminal session.
 
 Services are created first.
 
-- Iterate though `components` field to get all services as part of the pipeline
+- Iterate though `components` field to get all services as part of the pipeline (these services will be deployed together as part of the same pipeline)
 - Create each Service via API, with reference to artifact location, image name and tag, and chart location
 
 ### Pipeline
 
-Pipelines are created next
+Pipelines are created after service configuration.
 
-- Create pipeline object
 - Use `beta-values-files` to create a list of environment names
 - For each environment listed, create a deployment Stage using a Stage Template
 - Template inputs are:
