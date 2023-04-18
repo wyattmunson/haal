@@ -31,7 +31,7 @@ const handleService = async (serviceConfig) => {
   // define Harness identifier for service
   const serviceId = serviceConfig.name;
 
-  // translation: Cruise to Harness config structure
+  // translation: abstraction YAML spec to Harness config structure
   const harnessConfig = parseService(serviceConfig);
 
   // convert to yaml

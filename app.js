@@ -16,7 +16,7 @@ const main = async () => {
 
   // service manager
   await serviceManager(mainConfig);
-  //   await pipelineManager(mainConfig);
+  await pipelineManager(mainConfig);
 
   console.log("Completed successfully. Exiting...");
 };

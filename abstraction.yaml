@@ -1,6 +1,4 @@
 version: releasefile/v0alpha
-# Q: how to map a pipeline to a project?
-# Q: how are credentials referenced?
 components:
   - name: "releasinatorwebapp"
     artifacts: # instructions to build manifest
@@ -9,8 +7,8 @@ components:
         docker-images:
           - name: releasinator-example/webapp
             repositories:
-              prod: gcr.io/cruise-gcr-prod/releasinator-example/webapp
-              dev: gcr.io/cruise-gcr-prod/releasinator-example/webapp
+              prod: example.com/gcr-prod/releasinator-example/webapp
+              dev: example.com/gcr-prod/releasinator-example/webapp
             tag:
               type: "git-sha"
         chart: deploy/chart/releasinator-xampl/
@@ -27,8 +25,8 @@ components:
         docker-images:
           - name: releasinator-example/backend
             repositories:
-              prod: gcr.io/cruise-gcr-prod/releasinator-example/backend
-              dev: gcr.io/cruise-gcr-prod/releasinator-example/backend
+              prod: example.com/gcr-prod/releasinator-example/backend
+              dev: example.com/gcr-prod/releasinator-example/backend
             tag:
               type: "git-sha"
         chart: deploy/chart/releasinator-xampl/

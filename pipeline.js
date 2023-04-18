@@ -1,6 +1,7 @@
 import { httpGet, httpPostYaml, httpPutYaml } from "./api.js";
 import { parsePipeline, convertToYaml } from "./parser.js";
-const accountId = "dNg7t7xEQkWV0LjivvOlcw";
+import accountConfig from "./config.json" assert { type: "json" };
+const accountId = accountConfig.accountIdentifier;
 
 export const pipelineManager = async (config) => {
   console.log("--------------------\n     PIPELINE      \n--------------------");
@@ -12,8 +13,8 @@ export const pipelineManager = async (config) => {
     pipelineName: pipelineName,
     pipelineIdentifier: pipelineName.replaceAll("-", ""),
     accountIdentifier: accountId,
-    orgIdentifier: "SE_Sandbox",
-    projectIdentifier: "W_Inc",
+    orgIdentifier: accountConfig.orgIdentifier,
+    projectIdentifier: accountConfig.projectIdentifier,
   };
   let pipeStatus = { name: "test", status: "pending" };
 
@@ -32,7 +33,7 @@ const handlePipeline = async (serviceConfig, query, pipelineExists) => {
   // define Harness identifier for service
   const serviceId = serviceConfig.name;
 
-  // translation: Cruise to Harness config structure
+  // translation: abstraction YAML spec to Harness config structure
   const harnessConfig = parsePipeline(serviceConfig, query);
 
   // convert to yaml
