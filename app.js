@@ -2,6 +2,7 @@ import getInput from "./input.js";
 import { parseService, parseYaml, convertToYaml, parsePipeline } from "./parser.js";
 import { httpGet, httpPost, httpPut, httpPostYaml } from "./api.js";
 import { unixToHuman } from "./converters.js";
+import { pipelineManager } from "./pipeline.js";
 import util from "util";
 // const util = require("util");
 
@@ -42,25 +43,6 @@ const createEnvironment = () => {
     type: "PreProduction",
   };
   httpPost(url, body);
-};
-
-const pipelineManager = async (config) => {
-  // TODO: how does this get sourced?
-  const pipelineName = "api-created-pipeline";
-  // these are required query params for pipeline API calls
-  let pipeId = "tester";
-  const queryParams = {
-    pipelineIdentifier: pipelineName.replace("-", ""),
-    accountIdentifier: accountId,
-    orgIdentifier: "SE_Sandbox",
-    projectIdentifier: "W_Inc",
-  };
-  let pipeStatus = { name: "test", status: "pending" };
-
-  const pipelineExists = await checkPipelineExists(queryParams);
-  if (pipelineExists) pipeStatus.status = "doesNotExist";
-  // No upsert for pipelines - must check to see if it exists
-  await handlePipeline(config, queryParams, pipelineName);
 };
 
 // orchestrates service calls
@@ -129,77 +111,6 @@ const handleService = async (serviceConfig) => {
   //   } else {
   //     // do something
   //   }
-};
-
-/**
- * Handle pipeline
- */
-
-const handlePipeline = async (serviceConfig, query, pipelineName) => {
-  console.log("Pipeline Handler: Checking...");
-
-  // define Harness identifier for service
-  const serviceId = serviceConfig.name;
-
-  // translation: Cruise to Harness config structure
-  const harnessConfig = parsePipeline(serviceConfig, query, pipelineName);
-
-  // convert to yaml
-  const serviceYaml = convertToYaml(harnessConfig);
-  console.log(serviceYaml);
-
-  // upsert service - make API call to Harness
-  const pipelineCreation = await createPipeline(serviceYaml, query);
-
-  //   // check response
-  //   if (serviceCreation.status === "SUCCESS") {
-  //     console.log(
-  //       "SERVICE CREATED:",
-  //       serviceCreation.data.service.name,
-  //       "- created on:",
-  //       unixToHuman(serviceCreation.data.createdAt),
-  //       "last modified:",
-  //       serviceCreation.data.lastModifiedAt
-  //     );
-  //   } else {
-  //     return { status: "FAILURE" };
-  //   }
-
-  //   return serviceCreation;
-
-  // check to see if service exists
-  //   if (!checkServiceExists(serviceIdentifier)) {
-  //     // create service
-  //   } else {
-  //     // do something
-  //   }
-};
-
-const createPipeline = async (serviceYaml, query) => {
-  // let url = https://app.harness.io/gateway/pipeline/api/pipelines/v2?accountIdentifier=string&orgIdentifier=string&projectIdentifier=string&branch=string&repoIdentifier=string&rootFolder=string&filePath=string&commitMsg=string&isNewBranch=false&baseBranch=string&connectorRef=string&storeType=INLINE&repoName=string' \
-
-  console.log("Creating pipeline...");
-  let url = `https://app.harness.io/gateway/pipeline/api/pipelines/v2?accountIdentifier=${query.accountIdentifier}&orgIdentifier=${query.orgIdentifier}&projectIdentifier=${query.projectIdentifier}`;
-  const result = await httpPostYaml(url, serviceYaml);
-  console.log(result);
-  return result;
-};
-
-const checkPipelineExists = async (query) => {
-  let url = `https://app.harness.io/gateway/pipeline/api/pipelines/${query.pipelineIdentifier}?accountIdentifier=${query.accountIdentifier}&orgIdentifier=${query.orgIdentifier}&projectIdentifier=${query.projectIdentifier}`;
-  const result = await httpGet(url);
-
-  if (result.code === "SUCCESS_CONDITION") {
-    return true;
-  } else if (result.code === "ENTITY_NOT_FOUND") {
-    return false;
-  } else {
-    console.log("Unexpected pipeline return message");
-    throw new Error("Unexpected pipeline status");
-  }
-
-  console.log(result);
-  // let url = `https://app.harness.io/gateway/pipeline/api/pipelines/v2?accountIdentifier=string&orgIdentifier=string&projectIdentifier=string&branch=string&repoIdentifier=string&rootFolder=string&filePath=string&commitMsg=string&isNewBranch=false&baseBranch=string&connectorRef=string&storeType=INLINE&repoName=string`
 };
 
 const upsertService = (serviceYaml, id) => {

@@ -17,6 +17,7 @@ components:
         beta-values-files:
           dev: deploy/chart/releasinator-xampl/values-dev.yaml
           stage: deploy/chart/releasinator-xampl/values-dev.yaml
+          lle: deploy/chart/releasinator-xampl/values-dev.yaml
           # staging: deploy/chart/releasinator-xampl/values-staging.yaml
           # rnd: deploy/chart/releasinator-xampl/values-rnd.yaml
           # bake: deploy/chart/releasinator-xampl/values-bake.yaml

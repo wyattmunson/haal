@@ -89,7 +89,7 @@ export const parseService = (serviceManifest) => {
   return serviceJson;
 };
 
-export const parsePipeline = (config, query, name) => {
+export const parsePipeline = (config, query) => {
   // get envs - a deployment stage will be created for each env
   let envs = config.components[0].artifacts[0]["beta-values-files"];
   let stageNames = [];
@@ -98,19 +98,17 @@ export const parsePipeline = (config, query, name) => {
   for (let i in envs) {
     stageNames.push(i);
   }
-  //   const stages = envs.forEach((x) => {
-  //     x.push;
-  //   }, []);
-  console.log("Stage Names", stageNames);
+
+  //   console.log("Stage Names", stageNames);
   stageNames.forEach((x) => {
     stages.push(stageGenerator(x));
   });
 
-  console.log("THINGER", stages);
+  //   console.log("ALL STAGES:", stages);
 
   let pipelineJson = {
     pipeline: {
-      name: name,
+      name: query.pipelineName,
       identifier: query.pipelineIdentifier.replace("-", ""),
       projectIdentifier: query.projectIdentifier,
       orgIdentifier: query.orgIdentifier,
